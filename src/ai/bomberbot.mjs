@@ -61,6 +61,25 @@ export class Bomberbot extends Bomberman {
     return mywall;
   }
 
+  get nearestBomber() {
+    let mybomber = null;
+    let distance = -1;
+    
+    for (const bomber of this.bombermen) {
+      const d = this.position.distanceTo(bomber.position);
+      if (distance === -1) {
+        distance = d;
+        mybomber = bomber;
+      }        
+      else if (d < distance) {
+        distance = d;
+        mybomber = bomber;
+      }
+    }
+
+    return mybomber;
+  }
+
   walk() {
     const blockedWays = this.blockedWays;
     if (blockedWays[0] === 0)
@@ -114,13 +133,12 @@ export class Bomberbot extends Bomberman {
 
   live() {
     let result = [];
-    if (this.nearestWall !== null) {
-      if(this.nearestWall.position.distanceTo(this.position) <= 3)
+    if (this.nearestWall !== null || this.nearestBomber !== null) {
+      if(this.nearestWall.position.distanceTo(this.position) <= 3 || this.nearestBomber.position.distanceTo(this.position) <= 1)
         result.push(Direction.ACT); 
     }
     
     result.push(this.walk());
-    console.log(result);
     return result;
   }
 
