@@ -81,16 +81,29 @@ export class Bomberbot extends Bomberman {
   }
 
   walk() {
-    const blockedWays = this.blockedWays;
-    if (blockedWays[0] === 0)
-      return Direction.RIGHT;
-    else if(blockedWays[1] === 0)
-      return Direction.UP;
-    else if(blockedWays[2] === 0)
-      return Direction.LEFT;
-    else if(blockedWays[3] === 0)
-      return Direction.DOWN;
-    else return Direction.ACT;
+    const date = new Date();
+    const blockedWays = this.blockedWays; 
+    if (date.getMinutes % 2 === 0) {
+      if(blockedWays[2] === 0)
+        return Direction.LEFT;
+      else if(blockedWays[3] === 0)
+        return Direction.DOWN;
+      else if (blockedWays[0] === 0)
+        return Direction.RIGHT;
+      else if(blockedWays[1] === 0)
+        return Direction.UP;
+      else return Direction.ACT;
+    } else {
+      if (blockedWays[0] === 0)
+        return Direction.RIGHT;
+      else if(blockedWays[1] === 0)
+        return Direction.UP;
+      else if(blockedWays[2] === 0)
+        return Direction.LEFT;
+      else if(blockedWays[3] === 0)
+        return Direction.DOWN;
+      else return Direction.ACT;
+    }
   }
 
   walkTo(position) {
@@ -133,8 +146,9 @@ export class Bomberbot extends Bomberman {
 
   live() {
     let result = [];
+    let near = [];
     if (this.nearestWall !== null || this.nearestBomber !== null) {
-      if(this.nearestWall.position.distanceTo(this.position) <= 3 || this.nearestBomber.position.distanceTo(this.position) <= 1)
+      if(this.nearestWall.position.distanceTo(this.position) <= 1 || this.nearestBomber.position.distanceTo(this.position) <= 1)
         result.push(Direction.ACT); 
     }
     
