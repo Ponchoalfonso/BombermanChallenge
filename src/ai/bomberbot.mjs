@@ -2,6 +2,7 @@ import { Direction } from '../../Runner.mjs';
 import { Bomberman, Bomb, MeatChopper, Entity } from '../utility/bomberman.mjs';
 import { Vector } from '../utility/vector.mjs';
 
+var toggle = false;
 export class Bomberbot extends Bomberman {
 
   constructor (board) {
@@ -81,78 +82,54 @@ export class Bomberbot extends Bomberman {
   }
 
   walk() {
-    const date = new Date();
-    const blockedWays = this.blockedWays; 
-    if (date.getMinutes % 2 === 0) {
-      if(blockedWays[2] === 0)
-        return Direction.LEFT;
-      else if(blockedWays[3] === 0)
-        return Direction.DOWN;
-      else if (blockedWays[0] === 0)
-        return Direction.RIGHT;
-      else if(blockedWays[1] === 0)
-        return Direction.UP;
-      else return Direction.ACT;
-    } else {
-      if (blockedWays[0] === 0)
-        return Direction.RIGHT;
-      else if(blockedWays[1] === 0)
-        return Direction.UP;
-      else if(blockedWays[2] === 0)
-        return Direction.LEFT;
-      else if(blockedWays[3] === 0)
-        return Direction.DOWN;
-      else return Direction.ACT;
-    }
+    const blockedWays = this.blockedWays;
+    if (blockedWays[0] === 0)
+      return Direction.RIGHT;
+    else if(blockedWays[1] === 0)
+      return Direction.UP;
+    else if(blockedWays[2] === 0)
+      return Direction.LEFT;
+    else if(blockedWays[3] === 0)
+      return Direction.DOWN;
+    else return Direction.ACT;
   }
 
   walkTo(position) {
     const blockedWays = this.blockedWays;
+    const posSnap = position.copy();
 
-    // Walking on X axis
-    if (this.position.distanceXTo(position) > 1) {
-      if (blockedWays[0] === 0)
+    if (posSnap.x % 2 === 0)
+      posSnap.x--;
+
+    if (this.position.distanceXTo(posSnap) !== 0) {
+      if (this.position.distanceXTo(posSnap) > 1 && blockedWays[0] === 0) {
         return Direction.RIGHT;
-      else if (this.position.distanceYTo(position) > 1 && blockedWays[1])
-        return Direction.UP;
-      else if (this.position.distanceYTo(position) < 1 && blockedWays[3])
-        return Direction.DOWN;
-    } else if (this.position.distanceXTo(position) < 1) {
-      if (blockedWays[2] === 0)
+      } else if (this.position.distanceXTo(posSnap) < 1 && blockedWays[2] === 0 && !this.position.equalsX(posSnap)) {
         return Direction.LEFT;
-      else if (this.position.distanceYTo(position) > 1 && blockedWays[1])
+      } else {
+        return this.walk();
+      }
+    } else if (this.position.distanceYTo(posSnap) !== 0) {
+      if (this.position.distanceYTo(posSnap) > 0 && blockedWays[1] === 0 && !this.position.equalsY(posSnap)) {
         return Direction.UP;
-      else if (this.position.distanceYTo(position) < 1 && blockedWays[3])
+      } else if (this.position.distanceYTo(posSnap) < 0 && blockedWays[3] === 0 && !this.position.equalsY(posSnap)) {
         return Direction.DOWN;
+      } else {
+        this.walk();
+      }
+    } else {
+      return this.walk();
     }
-
-    // Walking on Y axis
-    if (this.position.distanceYTo(position) > 1) {
-      if (blockedWays[1] === 0)
-        return Direction.UP;
-      else if (this.position.distanceXTo(position) > 1 && blockedWays[0])
-        return Direction.RIGHT;
-      else if (this.position.distanceXTo(position) < 1 && blockedWays[2])
-        return Direction.LEFT;
-    } else if (this.position.distanceYTo(position) < 1) {
-      if (blockedWays[3] === 0)
-        return Direction.DOWN;
-      else if (this.position.distanceXTo(position) > 1 && blockedWays[0])
-        return Direction.RIGHT;
-      else if (this.position.distanceXTo(position) < 1 && blockedWays[2])
-        return Direction.LEFT;
-    } else return Direction.ACT;
   }
 
   live() {
     let result = [];
-    let near = [];
     if (this.nearestWall !== null || this.nearestBomber !== null) {
       if(this.nearestWall.position.distanceTo(this.position) <= 1 || this.nearestBomber.position.distanceTo(this.position) <= 1)
         result.push(Direction.ACT); 
     }
     
-    result.push(this.walk());
+    result.push(this.walkTo(this.nearestBomber.position));
     return result;
   }
 
