@@ -285,7 +285,7 @@ var Board = function(board){
     var size = boardSize();
     var xyl = new LengthToXY(size);
 
-    var getBombermen = function() {
+    var getBomberman = function() {
         var result = [];
         result = result.concat(findAll(Element.BOMBERMAN));
         result = result.concat(findAll(Element.BOMB_BOMBERMAN));
@@ -293,7 +293,7 @@ var Board = function(board){
         return result[0];
     };
 
-    var getOtherBombermans = function() {
+    var getBombermen = function() {
         var result = [];
         result = result.concat(findAll(Element.OTHER_BOMBERMAN));
         result = result.concat(findAll(Element.OTHER_BOMB_BOMBERMAN));
@@ -333,7 +333,7 @@ var Board = function(board){
         all = all.concat(getWalls());
         all = all.concat(getBombs());
         all = all.concat(getDestroyWalls());
-        all = all.concat(getOtherBombermans());
+        all = all.concat(getBombermen());
         all = all.concat(getFutureBlasts());
         return removeDuplicates(all);
     };
@@ -349,8 +349,8 @@ var Board = function(board){
             "Blasts: %s\n" +
             "Expected blasts at: %s",
                 boardAsString(),
-                getBombermen(),
-                printArray(getOtherBombermans()),
+                getBomberman(),
+                printArray(getBombermen()),
                 printArray(getMeatChoppers()),
                 printArray(getDestroyWalls()),
                 printArray(getBombs()),
@@ -457,8 +457,8 @@ var Board = function(board){
 
    return {
         size : boardSize,
+        getBomberman : getBomberman,
         getBombermen : getBombermen,
-        getOtherBombermans : getOtherBombermans,
         isMyBombermanDead : isMyBombermanDead,
         isAt : isAt,
         boardAsString : boardAsString,

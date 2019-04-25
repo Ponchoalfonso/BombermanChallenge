@@ -1,14 +1,19 @@
 import { Direction } from '../../Runner';
+import { Bomberman } from '../utility/bomberman';
+import { Vector } from '../utility/vector';
 
-export class Bomberbot {
+export class Bomberbot extends Bomberman {
+
   constructor (board) {
+    super(board.getBomberman());
+
     this.board = board;
-    this.bomberman = board.getBombermen();
+    this.bombermen = Array.from(board.getBombermen(), (bomber, i) => new Bomberman(bomber));
+    this.bombermen.shift();
   }
 
   live() {
-    console.log(this.bomberman);
-    return [Direction.UP];
+    return [Direction.ACT, Direction.RIGHT];
   }
 
 }
