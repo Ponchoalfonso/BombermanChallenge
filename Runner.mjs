@@ -333,7 +333,7 @@ var Board = function(board){
         var all = getMeatChoppers();
         all = all.concat(getWalls());
         all = all.concat(getBombs());
-        all = all.concat(getDestroyWalls());
+        all = all.concat(getDestroyableWalls());
         all = all.concat(getBombermen());
         all = all.concat(getFutureBlasts());
         return removeDuplicates(all);
@@ -352,7 +352,7 @@ var Board = function(board){
                 getBomberman(),
                 printArray(getBombermen()),
                 printArray(getMeatChoppers()),
-                printArray(getDestroyWalls()),
+                printArray(getDestroyableWalls()),
                 printArray(getBombs()),
                 printArray(getBlasts()),
                 printArray(getFutureBlasts()));
@@ -377,7 +377,7 @@ var Board = function(board){
        return findAll(Element.WALL);
    };
 
-   var getDestroyWalls = function() {
+   var getDestroyableWalls = function() {
        return findAll(Element.DESTROYABLE_WALL);
    };
 
@@ -392,6 +392,30 @@ var Board = function(board){
 	   result = result.concat(findAll(Element.OTHER_BOMB_BOMBERMAN));	   
        return result;
    };
+
+   var getTimedBombs = function (){
+       let result = [];
+       result =  result.concat( { 
+           ...findAll(Element.BOMB_TIMER_1),
+           timeLeft: 1,
+        });
+        result =  result.concat( { 
+            ...findAll(Element.BOMB_TIMER_1),
+            timeLeft: 2,
+         });
+         result =  result.concat( { 
+            ...findAll(Element.BOMB_TIMER_1),
+            timeLeft: 3,
+         });
+         result =  result.concat( { 
+            ...findAll(Element.BOMB_TIMER_1),
+            timeLeft: 4,
+         });
+         result =  result.concat( { 
+            ...findAll(Element.BOMB_TIMER_1),
+            timeLeft: 5,
+         });
+   }
 
    var getBlasts = function() {
        return findAll(Element.BOOM);
@@ -467,8 +491,9 @@ var Board = function(board){
         getMeatChoppers : getMeatChoppers,
         findAll : findAll,
         getWalls : getWalls,
-        getDestroyWalls : getDestroyWalls,
+        getDestroyableWalls : getDestroyableWalls,
         getBombs : getBombs,
+        getTimedBombs: getTimedBombs,
         getBlasts : getBlasts,
         getFutureBlasts : getFutureBlasts,
         isAnyOfAt : isAnyOfAt,
