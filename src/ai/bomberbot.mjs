@@ -1,6 +1,6 @@
-import { Direction } from '../../Runner';
-import { Bomberman } from '../utility/bomberman';
-import { Vector } from '../utility/vector';
+import { Direction } from '../../Runner.mjs';
+import { Bomberman } from '../utility/bomberman.mjs';
+import { Vector } from '../utility/vector.mjs';
 
 export class Bomberbot extends Bomberman {
 

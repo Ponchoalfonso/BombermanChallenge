@@ -19,9 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-import { Bomberbot } from './src/ai/bomberbot';
- 
-var browserNodeStub = require('./BrowserNodeStub');
+import { Bomberbot } from './src/ai/bomberbot.mjs';
+import browserNodeStub from './BrowserNodeStub';
+import WebSocket from 'ws';
+import util from 'util';
+
 var environment = typeof window === 'undefined' ? 'node' : 'browser';
 
 var log = function(string) {
@@ -70,7 +72,6 @@ function connect() {
         ws = browserNodeStub.webSoket();
         ws = ws(url);
     } else {
-        var WebSocket = require('ws');
         ws = new WebSocket(url);
     }
     
@@ -339,7 +340,6 @@ var Board = function(board){
     };
 
     var toString = function() {
-        var util = require('util');
         return util.format("%s\n" +
             "Bomberman at: %s\n" +
             "Other bombermans at: %s\n" +

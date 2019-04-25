@@ -23,7 +23,7 @@ const path = require('path');
 
 module.exports = {
     entry: {
-      runner: './Runner.js'
+      runner: './Runner.mjs'
     },
     output: {
         filename: '[name].bundle.js',
