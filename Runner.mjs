@@ -27,7 +27,6 @@ import util from 'util';
 var environment = typeof window === 'undefined' ? 'node' : 'browser';
 
 var log = function(string) {
-    console.log(string);
     if (environment === 'browser') {
         browserNodeStub.printLogOnTextArea(string);
     }
@@ -60,7 +59,7 @@ var processBoard = function(boardString) {
 };
 
 // TODO: Modify this url after with the one provided after registration on the server.
-var url = "http://18.216.234.16/codenjoy-contest/board/player/h4iysy3kjyz6zgma4aku?code=8362300879338365896";
+var url = "http://codenjoy.com/codenjoy-contest/board/player/yuh77w0zqahn3aevjh4o?code=1256039068254575756";
 url = url.replace("http", "ws");
 url = url.replace("board/player/", "ws?user=");
 url = url.replace("?code=", "&code=");
@@ -94,7 +93,6 @@ function connect() {
         var parameters = message.match(pattern);
         var boardString = parameters[1];
         var answer = processBoard(boardString);
-        console.log(answer);
         
         ws.send(answer);
     });

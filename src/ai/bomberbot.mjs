@@ -101,7 +101,11 @@ export class Bomberbot extends Bomberman {
     if (posSnap.x % 2 === 0)
       posSnap.x--;
 
-    if (this.position.distanceXTo(posSnap) !== 0) {
+    if (this.position.x !== posSnap.x) {
+      console.log('bomberman');
+      console.table(this.position);
+      console.log('target');
+      console.table(posSnap);
       if (this.position.distanceXTo(posSnap) > 1 && blockedWays[0] === 0) {
         return Direction.RIGHT;
       } else if (this.position.distanceXTo(posSnap) < 1 && blockedWays[2] === 0 && !this.position.equalsX(posSnap)) {
@@ -109,7 +113,7 @@ export class Bomberbot extends Bomberman {
       } else {
         return this.walk();
       }
-    } else if (this.position.distanceYTo(posSnap) !== 0) {
+    } else if (this.position.y !== posSnap.y) {
       if (this.position.distanceYTo(posSnap) > 0 && blockedWays[1] === 0 && !this.position.equalsY(posSnap)) {
         return Direction.UP;
       } else if (this.position.distanceYTo(posSnap) < 0 && blockedWays[3] === 0 && !this.position.equalsY(posSnap)) {
@@ -129,7 +133,7 @@ export class Bomberbot extends Bomberman {
         result.push(Direction.ACT); 
     }
     
-    result.push(this.walkTo(this.nearestBomber.position));
+    result.push(this.walkTo(this.nearestWall.position));
     return result;
   }
 

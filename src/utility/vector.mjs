@@ -6,7 +6,7 @@ export class Vector {
 
   distanceTo(vector) {
     if (vector instanceof Vector)
-      return Math.sqrt(Math.pow(vector.x - this.x, 2) + Math.pow(vector.y - this.y, 2));
+      return Math.abs(this.distanceXTo(vector)) + Math.abs(this.distanceYTo(vector));
     else return -1;
   }
 
